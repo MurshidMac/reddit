@@ -1,37 +1,34 @@
 package com.vimo.reddit.model;
 
-import com.vimo.reddit.model.User;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
-import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class Subreddit {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private String name;
-    @NotBlank
-    private String description;
-    //@NotBlank(message = "Name may not be blank");
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Post> posts;
+    @NotEmpty
+    private String text;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postId", referencedColumnName = "postId")
+    private Post post;
     private Instant createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 
 }
